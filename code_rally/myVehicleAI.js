@@ -37,11 +37,7 @@ function MyVehicleAI(vehicle, track, extra){
  * onRaceStart - Called when a race first begins.
  */
 MyVehicleAI.prototype.onRaceStart = function() {
-    this.vehicle.setAccelerationPercent(80);
-    this.vehicle.setBrakePercent(0);
-
-    var target = this.vehicle.getCheckpoint().getCenter();
-    this.vehicle.setTarget(target);
+    Your code goes in these methods!
 
     return this.getResponse();
 };
@@ -51,12 +47,6 @@ MyVehicleAI.prototype.onRaceStart = function() {
  */
 MyVehicleAI.prototype.onCheckpointUpdated = function() {
 
-    var target = this.vehicle.getCheckpoint().getCenter();
-    this.vehicle.setTarget(target);
-
-    this.vehicle.setAccelerationPercent(50);
-    this.vehicle.setBrakePercent(0);
-
     return this.getResponse();
 };
 
@@ -64,22 +54,6 @@ MyVehicleAI.prototype.onCheckpointUpdated = function() {
  * onOffTrack - Called when the car goes off track
  */
 MyVehicleAI.prototype.onOffTrack = function() {
-
-
-    this.vehicle.setTarget(this.vehicle.getCheckpoint().getCenter());
-    if(this.vehicle.getAccelerationPercent()>70){
-        this.vehicle.setAccelerationPercent(80);
-        this.vehicle.setBrakePercent(0);
-    }else{
-        this.vehicle.setAccelerationPercent(50);
-    }
-    this.vehicle.setBrakePercent(50);
-    this.vehicle.setAccelerationPercent(0);
-//    var target = this.vehicle.getCheckpoint().getIntersectionPoint(this.vehicle.getRotation(), this.vehicle.getPosition());
-//    if (!target) {
-//        target = this.vehicle.getCheckpoint().getCenter();
-//    }
-//    this.vehicle.setTarget(target);
 
     return this.getResponse();
 };
@@ -98,11 +72,6 @@ MyVehicleAI.prototype.onOpponentInProximity = function() {
     var otherVehicle = new Vehicle(this.extra);
 
 
-    if (aiutils.isCarAhead(this.track, this.vehicle, otherVehicle)){
-        this.vehicle.setTarget(otherVehicle.getTarget());
-        this.vehicle.setAccelerationPercent(100);
-        this.vehicle.setBrakePercent(0);
-    }
     return this.getResponse();
 };
 
@@ -119,15 +88,7 @@ MyVehicleAI.prototype.onCarCollision = function() {
 MyVehicleAI.prototype.onObstacleInProximity = function() {
     var obstacle = new Obstacle(this.extra);
 
-    if (this.vehicle.getAccelerationPercent()>50) {
-        this.vehicle.setAccelerationPercent(0);
-        this.vehicle.setBrakePercent(80);
-    } else {
-        if (this.vehicle.getAccelerationPercent()==0) this.vehicle.setAccelerationPercent(15);
-        else this.vehicle.setAccelerationPercent(this.vehicle.getAccelerationPercent()-10);
-        this.vehicle.setBrakePercent(50);
-    }
-    this.vehicle.setTarget(aiutils.getAlternativeLane(this.vehicle.getCheckpoint(), this.vehicle.getPosition()));
+
     return this.getResponse();
 };
 
@@ -136,6 +97,8 @@ MyVehicleAI.prototype.onObstacleInProximity = function() {
  */
 MyVehicleAI.prototype.onObstacleCollision = function() {
     var obstacle = new Obstacle(this.extra);
+
+
     return {status: 'noop'};
 };
 
