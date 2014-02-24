@@ -89,11 +89,11 @@ Track.prototype.getNextCheckpoint= function(checkpoint){
  * @return int Index of the checkpoint
  */
 Track.prototype.getCheckpointIndex = function(checkpoint){
-    for(var index in this.checkpoints) {
-        var i = this.checkpoints[index];
-    }
-
-    return i;
+    this.checkpoints.forEach(function(i, trackCheckPoint) {
+	if (checkpoint == trackCheckPoint) {
+		return i;
+	}
+    });
 
     console.log('Unknown checkpoint');
 };
