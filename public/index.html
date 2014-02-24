@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>dev@Pulse Code Jam</title>
+
+    <!-- Bootstrap -->
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #loader {
+            display: none;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+        }
+        .ajax-loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -40px;
+            margin-top: -25px;
+            display: block;
+            z-index: 999;
+            opacity: 0.6;
+        }
+        .loader-text{
+            color: red;
+            position: absolute;
+            top: 76%;
+            z-index: 999;
+            text-align: center;
+            width: 100%;
+            margin-left: -15px;
+            font-size: 11px;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+<!-- Static navbar -->
+<div class="navbar navbar-default" role="navigation" style="display:none;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">IBM CodeRally</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="setup.html">Setup</a></li>
+                <li><a href="car-ai-guide.html">Car AI Guide</a></li>
+                <li class="active"><a href="faq.html">FAQ</a></li>
+                <li><a href="race-console.html">Race Console</a></li>
+            </ul>
+
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</div>
+<h2 id="devpulse-code-jam">dev@Pulse Code Jam</h2>
+<p>Congrats, it works! What's next:</p>
+<ul>
+<li><a href="http://www.bluemix.net/">Sign up</a> for the Blue Mix beta.</li>
+<li><a href="http://www.vegascodejam.com/">Get Started</a> with the dev@Pulse Code Jam</li>
+<li><a href="http://www.vegascodejam.com/car-ai-guide.html#lang-nodejs">Node.JS AI Guide </a> </li>
+<li><a href="http://www.vegascodejam.com/faq.html">FAQ</a></li>
+<li><a href="https://www.ibm.com/developerworks/community/blogs/code-rally/entry/landing?lang=en">Code Rally Community Site</a></li>
+</ul>
+    <div class="container">
+        <h3 id="event-console-container">Event Console</h3>
+        <form id="event-console" action="">
+            <div class="row">
+                <div class="col-md-4">
+                    Action Parameter:
+                    <select id="events" name="action" class="form-control" required>
+                        <option value="onRaceStart">onRaceStart</option>
+                        <option value="onCheckpointUpdated">onCheckpointUpdated</option>
+                        <option value="onOffTrack">onOffTrack</option>
+                        <!--<option value="onStalled">onStalled</option>-->
+                        <option value="onOpponentInProximity">onOpponentInProximity</option>
+                        <option value="onCarCollision">onCarCollision</option>
+                        <option value="onObstacleInProximity">onObstacleInProximity</option>
+                        <option value="onObstacleCollision">onObstacleCollision</option>
+                        <option value="onTimeStep">onTimeStep</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Data Parameter</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <textarea class="form-control data" name="data" id="data" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-2 text-right">  <button type="button" id="clear" class="btn btn-danger replay">Clear</button>
+                    <input type="submit" class="btn btn-primary submit" value="Run" name="submit" /></div>
+            </div>
+        </form>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-md-4">
+                Response:
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="loader">
+
+                    <img src="small-loader.gif" class="ajax-loader">
+                    <p class="loader-text">Loading...</p>
+
+                </div>
+                <textarea class="form-control data" name="response" id="response" rows="5"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="scripts/helper.js"></script>
+<script>
+    $.support.cors = true;
+
+    var description= [
+        '{"vehicle":{"velocityNormalized":0.0,"position":{"y":693.0,"x":670.0},"id":"barbarian1","brakePercent":0,"attributePoints":{"weight":400,"traction":0,"acceleration":100,"turning":400},"rotation":0,"target":{"y":0.0,"x":0.0},"acceleration":{"x":0.0,"y":0.0},"checkpoint":{"start":{"y":624.0,"x":673.0},"width":10,"end":{"y":526.0,"x":728.0}},"velocity":{"x":0.0,"y":0.0},"lap":0,"attributes":{"weight":10111.110938919914,"traction":0.0,"acceleration":15.555555290646023,"turning":20.222221877839832},"accelerationPercent":0},"track":{"checkpoints":[{"start":{"y":693.0,"x":670.0},"width":10,"end":{"y":693.0,"x":732.0}},{"start":{"y":624.0,"x":673.0},"width":10,"end":{"y":526.0,"x":728.0}},{"start":{"y":624.0,"x":673.0},"width":10,"end":{"y":516.0,"x":685.0}},{"start":{"y":727.0,"x":598.0},"width":10,"end":{"y":697.0,"x":559.0}},{"start":{"y":1007.0,"x":400.0},"width":10,"end":{"y":961.0,"x":368.0}},{"start":{"y":1019.0,"x":375.0},"width":10,"end":{"y":961.0,"x":368.0}},{"start":{"y":933.0,"x":171.0},"width":10,"end":{"y":903.0,"x":233.0}},{"start":{"y":907.0,"x":164.0},"width":10,"end":{"y":903.0,"x":233.0}},{"start":{"y":709.0,"x":317.0},"width":10,"end":{"y":744.0,"x":356.0}},{"start":{"y":667.0,"x":387.0},"width":10,"end":{"y":687.0,"x":447.0}},{"start":{"y":667.0,"x":387.0},"width":10,"end":{"y":657.0,"x":448.0}},{"start":{"y":533.0,"x":275.0},"width":10,"end":{"y":500.0,"x":317.0}},{"start":{"y":247.0,"x":37.0},"width":10,"end":{"y":231.0,"x":95.0}},{"start":{"y":216.0,"x":37.0},"width":10,"end":{"y":231.0,"x":95.0}},{"start":{"y":145.0,"x":111.0},"width":10,"end":{"y":199.0,"x":132.0}},{"start":{"y":145.0,"x":135.0},"width":10,"end":{"y":199.0,"x":132.0}},{"start":{"y":326.0,"x":541.0},"width":10,"end":{"y":371.0,"x":516.0}},{"start":{"y":511.0,"x":955.0},"width":10,"end":{"y":569.0,"x":957.0}},{"start":{"y":491.0,"x":982.0},"width":10,"end":{"y":507.0,"x":1055.0}},{"start":{"y":491.0,"x":982.0},"width":10,"end":{"y":478.0,"x":1053.0}},{"start":{"y":103.0,"x":421.0},"width":10,"end":{"y":117.0,"x":533.0}},{"start":{"y":61.0,"x":441.0},"width":10,"end":{"y":117.0,"x":533.0}},{"start":{"y":66.0,"x":819.0},"width":10,"end":{"y":119.0,"x":819.0}},{"start":{"y":70.0,"x":1122.0},"width":10,"end":{"y":121.0,"x":1122.0}},{"start":{"y":73.0,"x":1311.0},"width":10,"end":{"y":122.0,"x":1290.0}},{"start":{"y":149.0,"x":1410.0},"width":10,"end":{"y":161.0,"x":1340.0}},{"start":{"y":183.0,"x":1410.0},"width":10,"end":{"y":161.0,"x":1340.0}},{"start":{"y":285.0,"x":1215.0},"width":10,"end":{"y":255.0,"x":1163.0}},{"start":{"y":285.0,"x":1215.0},"width":10,"end":{"y":287.0,"x":1155.0}},{"start":{"y":396.0,"x":1275.0},"width":10,"end":{"y":398.0,"x":1219.0}},{"start":{"y":713.0,"x":1187.0},"width":10,"end":{"y":769.0,"x":1123.0}},{"start":{"y":713.0,"x":1187.0},"width":10,"end":{"y":791.0,"x":1148.0}},{"start":{"y":551.0,"x":1467.0},"width":10,"end":{"y":587.0,"x":1503.0}},{"start":{"y":257.0,"x":1596.0},"width":10,"end":{"y":274.0,"x":1647.0}},{"start":{"y":72.0,"x":1678.0},"width":10,"end":{"y":127.0,"x":1715.0}},{"start":{"y":81.0,"x":1780.0},"width":10,"end":{"y":129.0,"x":1745.0}},{"start":{"y":321.0,"x":1885.0},"width":10,"end":{"y":317.0,"x":1823.0}},{"start":{"y":349.0,"x":1879.0},"width":10,"end":{"y":317.0,"x":1823.0}},{"start":{"y":431.0,"x":1691.0},"width":10,"end":{"y":397.0,"x":1647.0}},{"start":{"y":534.0,"x":1609.0},"width":10,"end":{"y":544.0,"x":1660.0}},{"start":{"y":732.0,"x":1610.0},"width":10,"end":{"y":717.0,"x":1560.0}},{"start":{"y":839.0,"x":1582.0},"width":10,"end":{"y":841.0,"x":1527.0}},{"start":{"y":979.0,"x":1637.0},"width":10,"end":{"y":942.0,"x":1566.0}},{"start":{"y":1009.0,"x":1617.0},"width":10,"end":{"y":942.0,"x":1566.0}},{"start":{"y":955.0,"x":1386.0},"width":10,"end":{"y":903.0,"x":1399.0}},{"start":{"y":883.0,"x":1078.0},"width":10,"end":{"y":832.0,"x":1095.0}},{"start":{"y":839.0,"x":887.0},"width":10,"end":{"y":780.0,"x":871.0}},{"start":{"y":973.0,"x":693.0},"width":10,"end":{"y":892.0,"x":717.0}},{"start":{"y":953.0,"x":663.0},"width":10,"end":{"y":892.0,"x":717.0}},{"start":{"y":869.0,"x":664.0},"width":10,"end":{"y":892.0,"x":717.0}}],"startingPoint":{"start":{"y":693.0,"x":670.0},"width":10,"end":{"y":693.0,"x":732.0}},"imageURL":"\/tracks\/pulse\/track.jpg"},"race":{"closestLane":{"y":599.5,"x":686.75},"alternativeLane":{"y":550.5,"x":714.25}}}',
+        '{"extra":{"velocityNormalized":0.0,"position":{"y":444.0,"x":157.0},"id":"barbarian2","brakePercent":0,"rotation":0,"target":{"y":0.0,"x":0.0},"acceleration":{"x":0.0,"y":0.0},"checkpoint":{"start":{"y":264.0,"x":29.0},"width":10,"end":{"y":297.0,"x":132.0}},"velocity":{"x":0.0,"y":0.0},"lap":0,"accelerationPercent":0},"vehicle":{"velocityNormalized":0.0,"position":{"y":444.0,"x":103.0},"id":"barbarian","brakePercent":50,"rotation":0,"target":{"y":280.5,"x":80.5},"acceleration":{"x":2.7214373E-17,"y":-0.44444445},"checkpoint":{"start":{"y":264.0,"x":29.0},"width":10,"end":{"y":297.0,"x":132.0}},"velocity":{"x":0.0,"y":0.0},"lap":0,"accelerationPercent":0},"race":{"closestLane":{"y":288.75,"x":106.25},"alternativeLane":{"y":272.25,"x":54.75}}}',
+        '{"vehicle":{"velocityNormalized":0.0,"position":{"y":444.0,"x":103.0},"id":"barbarian","brakePercent":0,"rotation":0,"target":{"y":280.5,"x":80.5},"acceleration":{"x":2.7214373E-17,"y":-0.44444445},"checkpoint":{"start":{"y":264.0,"x":29.0},"width":10,"end":{"y":297.0,"x":132.0}},"velocity":{"x":0.0,"y":0.0},"lap":0,"accelerationPercent":80},"race":{"closestLane":{"y":288.75,"x":106.25},"alternativeLane":{"y":272.25,"x":54.75}}}',
+        '{"extra":{"velocityNormalized":206.0065,"position":{"y":381.8081970214844,"x":106.75972747802734},"id":"ai5","brakePercent":0,"rotation":344,"target":{"y":280.5,"x":80.5},"acceleration":{"x":-11.111111,"y":-11.111111},"checkpoint":{"start":{"y":264.0,"x":29.0},"width":10,"end":{"y":297.0,"x":132.0}},"velocity":{"x":-56.090153,"y":-198.22354},"lap":0,"accelerationPercent":100},"vehicle":{"velocityNormalized":145.23557,"position":{"y":325.03582763671875,"x":87.79754638671875},"id":"barbarian","brakePercent":50,"rotation":352,"target":{"y":280.5,"x":80.5},"acceleration":{"x":0.0,"y":-0.0},"checkpoint":{"start":{"y":264.0,"x":29.0},"width":10,"end":{"y":297.0,"x":132.0}},"velocity":{"x":-18.527214,"y":-144.04898},"lap":0,"accelerationPercent":0},"race":{"closestLane":{"y":288.75,"x":106.25},"alternativeLane":{"y":272.25,"x":54.75}}}',
+        '{"extra":{"velocityNormalized":12.83796,"position":{"y":472.9923095703125,"x":114.92401885986328},"id":"ai3","brakePercent":0,"rotation":345,"target":{"y":272.25,"x":54.75},"acceleration":{"x":-5.7755995,"y":-11.111111},"checkpoint":{"start":{"y":264.0,"x":29.0},"width":10,"end":{"y":297.0,"x":132.0}},"velocity":{"x":10.150757,"y":7.8597302},"lap":0,"accelerationPercent":100},"vehicle":{"velocityNormalized":71.03575,"position":{"y":443.8411865234375,"x":102.92723846435547},"id":"barbarian","brakePercent":50,"rotation":354,"target":{"y":280.5,"x":80.5},"acceleration":{"x":0.0,"y":-0.0},"checkpoint":{"start":{"y":264.0,"x":29.0},"width":10,"end":{"y":297.0,"x":132.0}},"velocity":{"x":-23.571352,"y":-67.01096},"lap":0,"accelerationPercent":0},"race":{"closestLane":{"y":288.75,"x":106.25},"alternativeLane":{"y":272.25,"x":54.75}}}',
+        '{"extra":{"position":{"y":356.5,"x":1801.5},"height":45,"width":45,"imageURL":"\/obstacles\/vortex\/vortex.png"},"vehicle":{"velocityNormalized":36.69497,"position":{"y":294.2535095214844,"x":1876.8306884765625},"id":"barbarian","brakePercent":300,"rotation":180,"target":{"y":468.0,"x":1865.5},"acceleration":{"x":0.0,"y":0.0},"checkpoint":{"start":{"y":469.0,"x":1920.0},"width":10,"end":{"y":467.0,"x":1811.0}},"velocity":{"x":-0.16172354,"y":36.69461},"lap":1,"accelerationPercent":0},"race":{"closestLane":{"y":468.5,"x":1892.75},"alternativeLane":{"y":468.0,"x":1865.5}}}',
+        '{"extra":{"position":{"y":610.5151977539062,"x":184.5006866455078},"height":16,"width":14,"imageURL":"\/obstacles\/clip\/clip.png"},"vehicle":{"velocityNormalized":135.62071,"position":{"y":578.5789794921875,"x":187.53515625},"id":"barbarian","brakePercent":50,"rotation":164,"target":{"y":615.5,"x":248.75},"acceleration":{"x":0.17253561,"y":1.1855747},"checkpoint":{"start":{"y":557.0,"x":236.0},"width":10,"end":{"y":635.0,"x":253.0}},"velocity":{"x":36.861607,"y":130.51514},"lap":1,"accelerationPercent":10},"race":{"closestLane":{"y":576.5,"x":240.25},"alternativeLane":{"y":615.5,"x":248.75}}}',
+        '{"vehicle":{"velocityNormalized":0.0,"position":{"y":444.0,"x":103.0},"id":"barbarian","brakePercent":0,"rotation":0,"target":{"y":280.5,"x":80.5},"acceleration":{"x":2.7214373E-17,"y":-0.44444445},"checkpoint":{"start":{"y":264.0,"x":29.0},"width":10,"end":{"y":297.0,"x":132.0}},"velocity":{"x":0.0,"y":0.0},"lap":0,"accelerationPercent":80},"race":{"closestLane":{"y":288.75,"x":106.25},"alternativeLane":{"y":272.25,"x":54.75}}}'
+    ];
+
+    $('#events').change(function(){
+        var val = $(this).prop("selectedIndex");
+        $('#data').val(description[val]);
+    });
+
+    $('#data').val(description[0]);
+
+    // Assumes it is being run on the server where the Vehicle service resides. http://localhost:3000/
+    var endpointUrl = './';
+
+    $('#event-console').submit(function(e){
+        e.preventDefault();
+        $('#loader').show();
+        var queryString = $('#event-console').serialize();
+        log(queryString);
+        $.ajax({
+            url: endpointUrl,
+            type: 'POST',
+            crossDomain: true,
+            data: queryString,
+            dataType: "text",
+            success: function(xhr_data) {
+                $('#loader').hide();
+                $('#response').text(xhr_data);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                log('Request failed: ' + thrownError)
+            }
+        });
+    });
+
+    $("#clear").on('click', function(e) {
+        e.preventDefault();
+        $('#response').text('');
+        var queryString = 'action=clear&data=';
+        $.ajax({
+            url: endpointUrl,
+            type: 'POST',
+            crossDomain: true,
+            data: queryString,
+            success: function(xhr_data) {
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                log('Unable to clear session: ' + thrownError)
+            }
+        });
+        return false;
+    });
+
+</script>
+</body>
+</html>

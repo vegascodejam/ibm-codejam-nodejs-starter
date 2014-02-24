@@ -1,0 +1,101 @@
+canvas {
+    /*display: inline-block;*/
+    margin: 0 auto;
+
+}
+#game{
+    position: relative;
+    /*width: 76%;*/
+    /*height: 480px;*/
+    display:block;
+    padding-left: 0;
+    padding-right: 0;
+}
+#lights { z-index: 2; display: none  }
+#obstacle { z-index: 3; display: none }
+#vehicle { z-index: 4;display: none  }
+#canvas {
+    overflow: hidden;
+    z-index: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#placeholder{
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    /*position: absolute;*/
+    z-index: 30;
+    top: 0;
+    left: 0;
+}
+
+.game{
+    padding-top: 20px;
+}
+
+#heads-up {
+    display: none;
+    /*float: right;*/
+    /*width: 23%;*/
+    /*z-index: 9;*/
+}
+#user-info{
+    /*display: none;*/
+}
+
+
+#car-attributes{
+    /*display:none;*/
+    margin-top: 20px;
+}
+.welcome{
+    text-align:  right;
+    display: none;
+}
+
+#cboxLoadedContent{
+    overflow: hidden !important;
+}
+
+.inline{
+    font-size: 16px;
+}
+
+#loader {
+    display: none;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.ajax-loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -64px;
+    margin-top: -64px;
+    display: block;
+    z-index: 999;
+    opacity: 0.6;
+}
+.loader-text{
+    color: yellow;
+    position: absolute;
+    top: 50%;
+    z-index: 999;
+    left: 50%;
+    text-align: center;
+    width: 350px;
+    margin-left: -175px;
+    margin-top: 70px;
+}
+
+.replay, .cancel{
+    display: none;
+}
+
+.btn-primary{
+    height: 34px;
+}
