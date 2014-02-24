@@ -5,6 +5,7 @@ ibm-codejam-nodejs-starter
 * [Sign up](http://www.bluemix.net/) for the Blue Mix beta.
 * [Set up cf tool](http://www.ng.bluemix.net/docs/BuildingWeb.jsp#install-cf) - [Installers](https://github.com/cloudfoundry/cli)
 * Clone the code rally [starter code](https://github.com/thebarbariangroup/ibm-codejam-nodejs-starter) repo from github.
+* npm install
 * Use CF to connect to BlueMix:
 
 `cf api http://api.ng.bluemix.net`
@@ -13,11 +14,11 @@ ibm-codejam-nodejs-starter
 
 * Now comes the really difficult part, choosing a name for your application. You must prepend whatever name you select with "coderally-" in order to participate in the competition! This will also determine the public URL for your application and the name of your AI racer in the leaderboards.
 
-`cf push <YOUR_APPLICATION_NAME>`
+`cf push -c "node app.js" <YOUR_APPLICATION_NAME>`
 
 You can now visit your application on BlueMix and should see this page!  Now you can begin exploring the Node.JS starter application.  The main code you'll need to implement can be found in myVehicleAI.js
 
-As you complete your implementation, you can do additional pushes to BlueMix, and then test using the [race console](http://vegascodejam.com/race-console.html).
+As you complete your implementation, you can do additional pushes to BlueMix, and then test using the [race console](http://www.vegascodejam.com/race-console.html).
 
 
 ## How the AI Cars Work
